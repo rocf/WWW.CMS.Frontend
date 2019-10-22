@@ -8,9 +8,12 @@ import { ModalModule, TabsModule, TooltipModule, BsDropdownModule, PopoverModule
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MainRoutingModule } from './main-routing.module';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { TableModule } from 'primeng/table';
+import { PaginatorModule } from 'primeng/paginator';
 
 import { BsDatepickerModule, BsDatepickerConfig, BsDaterangepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { NgxBootstrapDatePickerConfigService } from 'assets/ngx-bootstrap/ngx-bootstrap-datepicker-config.service';
+import { HFuncComponent } from './hfunc/hfunc.component';
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 
@@ -28,10 +31,13 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
         NgxChartsModule,
         BsDatepickerModule.forRoot(),
         BsDropdownModule.forRoot(),
-        PopoverModule.forRoot()
+        PopoverModule.forRoot(),
+        TableModule,
+        PaginatorModule
     ],
     declarations: [
-        DashboardComponent
+        DashboardComponent,
+        HFuncComponent
     ],
     providers: [
         { provide: BsDatepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerConfig },

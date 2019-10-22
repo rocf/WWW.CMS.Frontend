@@ -1,0 +1,138 @@
+<div [@routerTransition]>
+	<div class="kt-subheader kt-grid__item">
+		<div class="kt-subheader__main">
+			<h3 class="kt-subheader__title">
+				<span>隐藏功能</span>
+			</h3>
+			<span class="kt-subheader__separator kt-subheader__separator--v"></span>
+			<span class="kt-subheader__desc">
+				隐藏功能维护
+			</span>
+		</div>
+
+		<div class="kt-subheader__toolbar">
+			<div class="kt-subheader__wrapper">
+
+				<button (click)="createUser()" *ngIf="isGranted('Pages.Administration.Users.Create')"
+					class="btn btn-primary"><i class="fa fa-plus"></i>添加</button>
+			</div>
+		</div>
+
+
+	</div>
+
+	<div class="kt-content">
+		<div class="kt-portlet kt-portlet--mobile">
+			<div class="kt-portlet__body">
+				<form class="kt-form" autocomplete="new-password">
+					<div>
+						<div class="row align-items-center mb-4">
+							<div class="col-xl-12">
+								<div class="form-group m-form__group align-items-center">
+									<div class="input-group">
+										<input [(ngModel)]="filter" name="filter" autoFocus class="form-control m-input"
+											[placeholder]="l('SearchWithThreeDot')" type="text">
+										<span class="input-group-btn">
+											<button (click)="getHFuncs()" class="btn btn-primary" type="submit"><i
+													class="flaticon-search-1"
+													[attr.aria-label]="l('Search')"></i></button>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</form>
+
+				<div class="row align-items-center">
+
+					<div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+						<p-table #dataTable 
+						(onLazyLoad)="getHFuncs()" 
+						[value]="primengTableHelper.records"
+						rows="{{primengTableHelper.defaultRecordsCountPerPage}}" 
+						[paginator]="false" 
+						[lazy]="true"
+						[scrollable]="true" 
+						ScrollWidth="100%" 
+						[responsive]="primengTableHelper.isResponsive"
+						[resizableColumns]="primengTableHelper.resizableColumns">
+							<ng-template pTemplate="header">
+								<tr>
+									<th style="width: 10%"
+										[hidden]="!isGrantedAny('Pages.Administration.Users.Impersonation', 'Pages.Administration.Users.Edit', 'Pages.Administration.Users.ChangePermissions', 'Pages.Administration.Users.Delete')">
+										{{'Actions' | localize}}</th>
+									<th style="width: 10%" pSortableColumn="no">
+										编码
+										<p-sortIcon field="No"></p-sortIcon>
+									</th>
+									<th style="width: 40%" pSortableColumn="name">
+										名称
+										<p-sortIcon field="name"></p-sortIcon>
+									</th>
+									<th style="width: 40%" pSortableColumn="description">
+										功能描述
+										<p-sortIcon field="description"></p-sortIcon>
+									</th>
+
+								</tr>
+							</ng-template>
+
+							<ng-template pTemplate="body" let-record="$implicit">
+								<td style="width: 130px"
+									[hidden]="!isGrantedAny('Pages.Administration.Users.Impersonation', 'Pages.Administration.Users.Edit', 'Pages.Administration.Users.ChangePermissions', 'Pages.Administration.Users.Delete')">
+									<div class="btn-group dropdown" dropdown container="body">
+										<button dropdownToggle class="dropdown-toggle btn btn-sm btn-primary">
+											<i class="fa fa-cog"></i><span class="caret"></span>
+											{{"Actions" | localize}}
+										</button>
+										<ul class="dropdown-menu" *dropdownMenu>
+											<li>
+												<a href="javascript:;"
+													*ngIf="'Pages.Administration.Users.Edit' | permission"
+													(click)="createOrEditUserModal.show(record.id)">{{'Edit' | localize}}</a>
+											</li>
+
+										</ul>
+									</div>
+								</td>
+								<td style="width: 150px">
+									<span class="ui-column-title">编号</span>
+									{{record.No}}
+								</td>
+								<td style="width: 150px">
+									<span class="ui-column-title">名称</span>
+									{{record.Name}}
+								</td>
+								<td style="width: 150px">
+									<span class="ui-column-title">功能描述</span>
+									{{record.Description}}
+								</td>
+							</ng-template>
+						</p-table>
+						<div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+							{{'NoData' | localize}}
+						</div>
+						<div class="primeng-paging-container">
+							<p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+								(onPageChange)="getHFuncs($event)" [totalRecords]="primengTableHelper.totalRecordsCount"
+								[rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+
+							</p-paginator>
+							<span class="total-records-count">
+								{{'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount}}
+							</span>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+
+</div>
